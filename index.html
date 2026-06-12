@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Сапер — WebDataRocks</title>
+
+  <!-- WebDataRocks -->
+  <link rel="stylesheet" href="https://cdn.webdatarocks.com/latest/webdatarocks.min.css" />
+  <script src="https://cdn.webdatarocks.com/latest/webdatarocks.toolbar.min.js"></script>
+  <script src="https://cdn.webdatarocks.com/latest/webdatarocks.js"></script>
+
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="game-window">
+
+  
+
+</div>
+
+
+
+<script src="js/game.js"></script>
+<script src="js/render.js"></script>
+<script src="js/ui.js"></script>
+
+<script>
+  // Створюємо гру
+  const game = new MinesweeperGame(
+    GAME_CONFIG.ROWS,
+    GAME_CONFIG.COLS,
+    GAME_CONFIG.MINES
+  );
+
+  let ui; 
+
+  // Створюємо renderer
+  const renderer = new MinesweeperRenderer(
+    "pivot-container",
+    game,
+    (row, col, isRightClick) => {
+      // Callback від renderer - UI обробляє клік
+      if (ui) ui.handleCellClick(row, col, isRightClick);
+    }
+  );
+
+  // Ініціалізуємо WebDataRocks
+  renderer.init();
+
+  // Ініціалізуємо UI
+  ui = new MinesweeperUI(game, renderer);
+</script>
+
+</body>
+</html>

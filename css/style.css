@@ -1,0 +1,23 @@
+/* style.css — Сапер: класичний вінтажний стиль з чітким 3D-ефектом */
+
+
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+/* ─── Змінні ─────────────────────────────────────────────────────────────── */
+:root {
+  --bg-page:    #3a3a3a;
+  --bg-panel:   #c0c0c0;
+  --bg-inset:   #808080;
+  --border-hi:  #ffffff;
+  --border-lo:  #808080;
+  --border-dk:  #404040;
+
+  --display-bg: #1a0a00;
+  --display-fg: #ff2200;
+  --display-off:#550000;
+
+  --font-mono: 'Share Tech Mono', 'Courier New', monospace;
+
+  --panel-pad: 10px;
+  --panel-border: 3px;
+}

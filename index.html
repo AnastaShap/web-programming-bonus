@@ -17,6 +17,51 @@
 
 <div class="game-window">
 
+ <div class="window-title">
+   <span class="window-title__name">💣 Сапер</span>
+   <div class="window-controls">
+     <div class="win-btn">_</div>
+     <div class="win-btn">□</div>
+     <div class="win-btn" onclick="document.querySelector('.game-window').style.display='none'">✕</div>
+   </div>
+ </div>
+
+ <!-- Табло -->
+ <div class="scoreboard">
+   <div class="lcd" id="mine-counter">040</div>
+
+   <button class="reset-btn" id="reset-btn" title="Нова гра (R)">🙂</button>
+
+   <div class="lcd" id="timer">000</div>
+ </div>
+ <div class="mode-bar">
+  <span id="mode-label">Відкрити</span>
+  <label class="toggle-switch" title="Перемкнути режим (F)">
+    <input type="checkbox" id="mode-toggle" />
+    <span class="toggle-track"></span>
+  </label>
+  <span class="mode-bar__hint">ПКМ = 🚩 завжди</span>
+</div>
+
+ <!-- Поле (WebDataRocks) -->
+ <div class="board-wrapper">
+   <div id="pivot-container"></div>
+
+   <!-- Оверлей кінця гри -->
+  <div class="game-overlay" id="game-overlay">
+    <div class="overlay-card">
+      <div id="overlay-title"> Перемога!</div>
+      <div id="overlay-msg">Поле розчищено!</div>
+      <button class="overlay-btn" id="overlay-btn">Нова гра</button>
+    </div>
+  </div>
+</div>
+
+ <!-- Хоткеї -->
+ <div class="hotkeys">
+   R — нова гра &nbsp;|&nbsp; F — режим прапорця &nbsp;|&nbsp; ПКМ — прапорець/? завжди
+ </div>
+
   
 
 </div>
@@ -29,7 +74,7 @@
 
 <script>
   // Створюємо гру
-  const game = new MinesweeperGame(
+  const name = new MinesweeperGame(
     GAME_CONFIG.ROWS,
     GAME_CONFIG.COLS,
     GAME_CONFIG.MINES
@@ -37,7 +82,7 @@
 
   let ui; 
 
-  // Створюємо renderer
+  // renderer
   const renderer = new MinesweeperRenderer(
     "pivot-container",
     game,
@@ -50,7 +95,6 @@
   // Ініціалізуємо WebDataRocks
   renderer.init();
 
-  // Ініціалізуємо UI
   ui = new MinesweeperUI(game, renderer);
 </script>
 

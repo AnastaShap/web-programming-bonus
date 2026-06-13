@@ -1,9 +1,9 @@
-/* style.css — Сапер: класичний вінтажний стиль з чітким 3D-ефектом */
+/* style.css  Сапер: класичний вінтажний стиль з чітким 3D-ефектом */
 
 
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
-/* ─── Змінні ─────────────────────────────────────────────────────────────── */
+/*Змінні*/
 :root {
   --bg-page:    #3a3a3a;
   --bg-panel:   #c0c0c0;
@@ -20,4 +20,116 @@
 
   --panel-pad: 10px;
   --panel-border: 3px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg-page);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  padding: 20px;
+}
+
+
+.game-window {
+  background: var(--bg-panel);
+  border-top:    var(--panel-border) solid var(--border-hi);
+  border-left:   var(--panel-border) solid var(--border-hi);
+  border-right:  var(--panel-border) solid var(--border-dk);
+  border-bottom: var(--panel-border) solid var(--border-dk);
+  padding: var(--panel-pad);
+  display: inline-flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+}
+
+/* Заголовок вікна */
+.window-title {
+  background: linear-gradient(90deg, #000080, #1084d0);
+  color: #fff;
+  font-size: 13px;
+  font-weight: bold;
+  padding: 3px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+  letter-spacing: 0.5px;
+}
+
+.window-title__name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.window-controls {
+  display: flex;
+  gap: 2px;
+}
+
+.win-btn {
+  width: 16px;
+  height: 14px;
+  background: var(--bg-panel);
+  border-top:    2px solid var(--border-hi);
+  border-left:   2px solid var(--border-hi);
+  border-right:  2px solid var(--border-dk);
+  border-bottom: 2px solid var(--border-dk);
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #000;
+  font-weight: bold;
+}
+
+.scoreboard{
+  background: var(--bg-panel);
+  border-top:    2px solid var(--border-lo);
+  border-left:   2px solid var(--border-lo);
+  border-right:  2px solid var(--border-hi);
+  border-bottom: 2px solid var(--border-hi);
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  justify-content
+: space-between;
+}
+
+
+/* LCD-дисплей (таймер) */
+.lcd{
+  background: var(--display-bg);
+  color: var(--display-fg);
+  font-family: var(--font-mono);
+  font-size: 28px;
+  font-weight: bold;
+  letter-spacing: 4px;
+  padding: 4px 8px;
+  min-width: 72px;
+  text-align: right;
+  border-top:    2px solid var(--border-dk);
+  border-left:   2px solid var(--border-dk);
+  border-right:  2px solid var(--border-hi);
+  border-bottom: 2px solid var(--border-hi);
+  text-shadow: 0 0 8px #ff2200;
+  position: relative;
+}
+
+.lcd::before{
+}
+
+.reset-btn:active{
+  border-top: 3px solid var(--border-dk);
+  border-left: 3px solid var(--border-dk);
+  border-right:  3px solid var(--border-hi);
+  border-bottom: 3px solid var(--border-hi);
 }

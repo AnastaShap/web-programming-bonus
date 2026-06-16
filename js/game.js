@@ -97,5 +97,48 @@ class MinesweeperGame {
    return count;
  }
 
+ // ---Дії гравця---
+
+/**
+ * Відкрити клітинку.
+ * Повертає об'єкт { changed: [{row, col}], gameState }
+ */
+openCell(row, col) {
+  if (this.gameState === GAME_STATE.WON || this.gameState === GAME_STATE.LOST) {
+    return { changed: [], gameState: this.gameState };
+  }
+
+  const cell = this.board[row][col];
+
+  // Не можна відкрити прапорець або вже відкриту клітинку
+  if (cell.state === CELL_STATE.FLAG || cell.state === CELL_STATE.OPEN) {
+    return { changed: [], gameState: this.gameState };
+  }
+
+  // Перший клік — стартуємо гру та розміщуємо міни
+  if (this.gameState === GAME_STATE.IDLE) {
+    this.gameState = GAME_STATE.PLAYING;
+    this.startTime = Date.now();
+    this._placeMines(row, col);
+  }
+
+  const changed = [];
+
+  if (cell.isMine) {
+    // Програш
+    cell.state = CELL_STATE.OPEN;
+    changed.push({ row, col });
+    this._revealAllMines(changed);
+    this.gameState = GAME_STATE.LOST;
+    this.endTime = Date.now();
+  } else {
+    // Відкриваємо клітинку (+ flood fill якщо порожня)
+    this._openSafe(row, col, changed);
+    this._checkWin();
+  }
+
+  return { changed, gameState: this.gameState };
+}
+
 
 }

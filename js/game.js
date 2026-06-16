@@ -140,5 +140,33 @@ openCell(row, col) {
   return { changed, gameState: this.gameState };
 }
 
+/**
+ * Перемикання прапорця / знака питання / прихованого стану.
+ * Цикл: hidden -> flag -> question -> hidden
+ */
+toggleFlag(row, col) {
+  if (this.gameState === GAME_STATE.WON || this.gameState === GAME_STATE.LOST) {
+    return { changed: [], gameState: this.gameState };
+  }
+
+  const cell = this.board[row][col];
+
+  if (cell.state === CELL_STATE.OPEN) {
+    return { changed: [], gameState: this.gameState };
+  }
+
+  if (cell.state === CELL_STATE.HIDDEN) {
+    cell.state = CELL_STATE.FLAG;
+    this.flagCount++;
+  } else if (cell.state === CELL_STATE.FLAG) {
+    cell.state = CELL_STATE.QUESTION;
+    this.flagCount--;
+  } else if (cell.state === CELL_STATE.QUESTION) {
+    cell.state = CELL_STATE.HIDDEN;
+  }
+
+  return { changed: [{ row, col }], gameState: this.gameState };
+}
+
 
 }

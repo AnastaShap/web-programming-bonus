@@ -226,3 +226,134 @@ body {
 #mode-label.mode--flag {
   color: #cc3300;
 }
+
+.board-wrapper {
+  border-top:    3px solid var(--border-lo);
+  border-left:   3px solid var(--border-lo);
+  border-right:  3px solid var(--border-hi);
+  border-bottom: 3px solid var(--border-hi);
+  overflow: hidden;
+  position: relative;
+  /* Мінімальний розмір для 16×16 по 36px = 576px */
+  min-width: 580px;
+  min-height: 580px;
+}
+
+#pivot-container {
+  width: 100%;
+  height: 100%;
+}
+
+/* Приховуємо зайві елементи WebDataRocks */
+.wdr-toolbar,
+.wdr-ui-element.wdr-overlay,
+[class*="wdr-grand-total"],
+[class*="wdr-total"] {
+  display: none !important;
+}
+
+/* Прибираємо заголовки рядків/стовпців (ROW, COL) */
+.wdr-header-r,
+.wdr-header-c {
+  display: none !important;
+}
+
+.wdr-cell {
+  padding: 0 !important;
+  border: none !important;
+}
+
+.game-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+  z-index: 100;
+}
+
+.game-overlay.overlay--visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.overlay-card {
+  background: var(--bg-panel);
+  border-top:    4px solid var(--border-hi);
+  border-left:   4px solid var(--border-hi);
+  border-right:  4px solid var(--border-dk);
+  border-bottom: 4px solid var(--border-dk);
+  padding: 24px 32px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 220px;
+}
+
+#overlay-title {
+  font-size: 28px;
+  font-weight: bold;
+  font-family: var(--font-mono);
+}
+
+#overlay-msg {
+  font-size: 14px;
+  color: #333;
+  font-family: var(--font-mono);
+}
+
+.overlay-btn {
+  margin-top: 6px;
+  padding: 8px 20px;
+  font-size: 14px;
+  font-family: var(--font-mono);
+  background: var(--bg-panel);
+  border-top:    3px solid var(--border-hi);
+  border-left:   3px solid var(--border-hi);
+  border-right:  3px solid var(--border-dk);
+  border-bottom: 3px solid var(--border-dk);
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.overlay-btn:active {
+  border-top:    3px solid var(--border-dk);
+  border-left:   3px solid var(--border-dk);
+  border-right:  3px solid var(--border-hi);
+  border-bottom: 3px solid var(--border-hi);
+}
+
+/* Підказка хоткеїв*/
+.hotkeys {
+  text-align: center;
+  color: #888;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  margin-top: 4px;
+  letter-spacing: 0.3px;
+}
+
+/*Адаптивність  */
+@media (max-width: 640px) {
+  .board-wrapper {
+    min-width: 320px;
+    min-height: 320px;
+  }
+  .lcd {
+    font-size: 20px;
+    min-width: 56px;
+  }
+  .reset-btn {
+    font-size: 18px;
+  }
+}
+
+/*  Зменшений рух */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}

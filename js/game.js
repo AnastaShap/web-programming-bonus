@@ -284,6 +284,8 @@ _checkWin() {
   }
 }
 
+
+
   getCell(row, col) {
     return this.board[row][col];
   }
@@ -336,6 +338,26 @@ _checkWin() {
     if (cell.isMine) return "X";
     if (cell.adjacentMines === 0) return " ";
     return String(cell.adjacentMines);
+  }
+
+
+    // -helpers-
+
+  _inBounds(r, c) {
+    return r >= 0 && r < this.rows && c >= 0 && c < this.cols;
+  }
+
+  _eachNeighbor(row, col, callback) {
+    for (let dr = -1; dr <= 1; dr++) {
+      for (let dc = -1; dc <= 1; dc++) {
+        if (dr === 0 && dc === 0) continue;
+        const nr = row + dr;
+        const nc = col + dc;
+        if (this._inBounds(nr, nc)) {
+          callback(nr, nc);
+        }
+      }
+    }
   }
 }
 

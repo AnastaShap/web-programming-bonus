@@ -34,54 +34,90 @@ class MinesweeperUI {
 
   //Прив'язка подій
 
-  _bindEvents() {
+   _bindEvents() {
 
-    this.el.resetBtn.addEventListener("click", () => this._onReset());
+   this.el.resetBtn.addEventListener("click", () => this._onReset());
 
-    // Кнопка в оверлеї
-    this.el.overlayBtn.addEventListener("click", () => this._onReset());
+   // Кнопка в оверлеї
+   this.el.overlayBtn.addEventListener("click", () => this._onReset());
 
-    // Перемикач режиму
-    this.el.modeToggle.addEventListener("change", (e) => {
-      this.mode = e.target.checked ? UI_MODE.FLAG : UI_MODE.OPEN;
-      this._updateModeLabel();
-    });
+   // Перемикач режиму
+   this.el.modeToggle.addEventListener("change", (e) => {
+     this.mode = e.target.checked ? UI_MODE.FLAG : UI_MODE.OPEN;
+     this._updateModeLabel();
+   });
 
-    // Клавіатура: F — перемкнути режим, R — рестарт
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "f" || e.key === "F") {
-        this.el.modeToggle.checked = !this.el.modeToggle.checked;
-        this.el.modeToggle.dispatchEvent(new Event("change"));
-      }
-      if (e.key === "r" || e.key === "R") {
-        this._onReset();
-      }
-    });
+   // Клавіатура: F — перемкнути режим, R — рестарт
+   document.addEventListener("keydown", (e) => {
+     if (e.key === "f" || e.key === "F") {
+       this.el.modeToggle.checked = !this.el.modeToggle.checked;
+       this.el.modeToggle.dispatchEvent(new Event("change"));
+     }
+     if (e.key === "r" || e.key === "R") {
+       this._onReset();
+     }
+   });
+ }
+
+ // Обробник кліку по клітинці (викликається з renderer) 
+
+ handleCellClick(row, col, isRightClick) {
+   if (this.game.isOver()) return;
+
+   let result;
+
+   if (isRightClick) {
+     // Правий клік завжди = прапорець/питання
+     result = this.game.toggleFlag(row, col);
+   } else {
+     // Лівий клік залежить від режиму
+     if (this.mode === UI_MODE.FLAG) {
+       result = this.game.toggleFlag(row, col);
+     } else {
+       const cell = this.game.getCell(row, col);
+       // Chord: якщо клітинка вже відкрита і має цифру
+       if (cell.state === CELL_STATE.OPEN && cell.adjacentMines > 0) {
+         result = this.game.chordOpen(row, col);
+       } else {
+         result = this.game.openCell(row, col);
+       }
+     }
+   }
+
+   // Старт таймера при першому ході
+   if (this.game.gameState === GAME_STATE.PLAYING && !this.timerInterval) {
+     this._startTimer();
+   }
+
+   this._updateCounter();
+   this.renderer.update();
+
+   // Кінець гри
+   if (result.gameState === GAME_STATE.WON) {
+     this._onWin();
+   } else if (result.gameState === GAME_STATE.LOST) {
+     this._onLose();
+   }
+ }
+
+  
+
+
+  //Лічильник мін
+_updateCounter() {
+  const remaining = this.game.getRemainingMines();
+  const display = Math.max(-99, Math.min(999, remaining));
+  this.el.mineCounter.textContent = String(display).padStart(3, "0");
+}
+
+//  Режим
+_updateModeLabel() {
+  if (this.mode === UI_MODE.FLAG) {
+    this.el.modeLabel.textContent = "🚩 Прапорець";
+    this.el.modeLabel.classList.add("mode--flag");
+  } else {
+    this.el.modeLabel.textContent = "🖱️ Відкрити";
+    this.el.modeLabel.classList.remove("mode--flag");
   }
-
-    _onLose() {
-    this._stopTimer();
-    this.el.overlayTitle.textContent = " Бум!";
-    this.el.overlayMsg.textContent = "Ти підірвався. Спробуй ще раз!";
-    this.el.overlay.classList.add("overlay--visible");
-    this.el.resetBtn.textContent = "😵";
-  }
-
-  _onReset() {
-    this._stopTimer();
-    this.el.overlay.classList.remove("overlay--visible");
-    this.el.resetBtn.textContent = "🙂";
-
-    // Скидаємо режим
-    this.mode = UI_MODE.OPEN;
-    this.el.modeToggle.checked = false;
-    this._updateModeLabel();
-
-    // Скидаємо гру
-    this.game.reset();
-    this._updateCounter();
-    this._updateTimer();
-
-    this.renderer.refresh();
-  }
+}
 }

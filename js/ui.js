@@ -100,7 +100,27 @@ class MinesweeperUI {
    }
  }
 
-  
+  //Таймер 
+
+_startTimer() {
+  this.timerInterval = setInterval(() => {
+    this._updateTimer();
+  }, 500);
+}
+
+_stopTimer() {
+  if (this.timerInterval) {
+    clearInterval(this.timerInterval);
+    this.timerInterval = null;
+  }
+  this._updateTimer(); // фінальне значення
+}
+
+_updateTimer() {
+  const secs = this.game.getElapsedSeconds();
+  const display = Math.min(secs, 999);
+  this.el.timer.textContent = String(display).padStart(3, "0");
+}
 
 
   //Лічильник мін
@@ -120,4 +140,42 @@ _updateModeLabel() {
     this.el.modeLabel.classList.remove("mode--flag");
   }
 }
+
+//  Кінець гри
+
+_onWin() {
+  this._stopTimer();
+  const secs = this.game.getElapsedSeconds();
+  this.el.overlayTitle.textContent = "🎉 Перемога!";
+  this.el.overlayMsg.textContent = `Поле розчищено за ${secs} секунд`;
+  this.el.overlay.classList.add("overlay--visible");
+  this.el.resetBtn.textContent = "😎";
+}
+
+_onLose() {
+  this._stopTimer();
+  this.el.overlayTitle.textContent = " Бум!";
+  this.el.overlayMsg.textContent = "Ти підірвався. Спробуй ще раз!";
+  this.el.overlay.classList.add("overlay--visible");
+  this.el.resetBtn.textContent = "😵";
+}
+
+_onReset() {
+  this._stopTimer();
+  this.el.overlay.classList.remove("overlay--visible");
+  this.el.resetBtn.textContent = "🙂";
+
+  // Скидаємо режим
+  this.mode = UI_MODE.OPEN;
+  this.el.modeToggle.checked = false;
+  this._updateModeLabel();
+
+  // Скидаємо гру
+  this.game.reset();
+  this._updateCounter();
+  this._updateTimer();
+
+  this.renderer.refresh();
+}
+
 }

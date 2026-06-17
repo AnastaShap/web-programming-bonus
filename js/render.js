@@ -2,7 +2,7 @@
  * render.js — WebDataRocks ініціалізація та кастомний рендер клітинок
  */
 
-// Кольори цифр (класичний Сапер)
+// Кольори цифр
 const NUMBER_COLORS = {
   1: "#1a73e8", // синій
   2: "#2e7d32", // зелений
@@ -20,11 +20,68 @@ class MinesweeperRenderer {
      * @param {MinesweeperGame} game
      * @param {Function} onCellClick - callback(row, col, isRightClick)
      */
-constructor(containerId, game, onCellClick) {
-  this.containerId = containerId;
-  this.game = game;
-  this.onCellClick = onCellClick;
-  this.pivot = null;
-  this._pendingUpdate = false;
+    constructor(containerId, game, onCellClick) {
+      this.containerId = containerId;
+      this.game = game;
+      this.onCellClick = onCellClick;
+      this.pivot = null;
+      this._pendingUpdate = false;
+    }
+
+  init() {
+  this.pivot = new WebDataRocks({
+    container: `#${this.containerId}`,
+    toolbar: false,
+    width: "100%",
+    height: "100%",
+
+    report: {
+      dataSource: {
+        data: this._buildData(),
+      },
+      slice: {
+        rows: [{ uniqueName: "ROW" }],
+        columns: [{ uniqueName: "COL" }],
+        measures: [
+          {
+            uniqueName: "VALUE",
+            aggregation: "max",
+            caption: "",
+          },
+        ],
+        // Прибираємо рядки "Grand Total"
+        grandTotalsPosition: "off",
+      },
+      options: {
+        grid: {
+          type: "flat",
+          showTotals: "off",
+          showGrandTotals: "off",
+          title: "",
+        },
+        showEmptyData: true,
+      },
+      formats: [
+        {
+          name: "",
+          thousandsSeparator: "",
+          decimalSeparator: "",
+          maxDecimalPlaces: 0,
+          nullValue: "",
+        },
+      ],
+    },
+
+    customizeCell: this._customizeCell.bind(this),
+
+    reportcomplete: () => {
+      this._attachClickHandlers();
+    },
+  });
 }
+
+
+  _buildData() {
+    return this.game.getBoardFlat();
+  }
 }

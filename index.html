@@ -50,7 +50,6 @@
   <div class="board-wrapper">
     <div id="pivot-container"></div>
 
-    <!-- Оверлей кінця гри -->
     <div class="game-overlay" id="game-overlay">
       <div class="overlay-card">
         <div id="overlay-title"> Перемога!</div>
@@ -60,13 +59,11 @@
     </div>
   </div>
 
-  <!-- Хоткеї -->
   <div class="hotkeys">
     R — нова гра &nbsp;|&nbsp; F — режим прапорця &nbsp;|&nbsp; ПКМ — прапорець/? завжди
   </div>
 
-</div><!-- /.game-window -->
-
+</div>
 
 
 <script src="js/game.js"></script>
@@ -81,15 +78,13 @@
     GAME_CONFIG.MINES
   );
 
-  //  Створюємо UI (без renderer — він ще не готовий)
   let ui; 
 
-  // Створюємо renderer
   const renderer = new MinesweeperRenderer(
     "pivot-container",
     game,
     (row, col, isRightClick) => {
-      // Callback від renderer → UI обробляє клік
+      // Callback від renderer -> UI обробляє клік
       if (ui) ui.handleCellClick(row, col, isRightClick);
     }
   );

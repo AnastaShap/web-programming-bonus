@@ -1,9 +1,9 @@
-/* style.css — Сапер: класичний вінтажний стиль з чітким 3D-ефектом */
+/* style.css  Сапер: класичний вінтажний стиль з чітким 3D-ефектом */
 
 
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
-/* ─── Змінні ─────────────────────────────────────────────────────────────── */
+/*Змінні*/
 :root {
   --bg-page:    #3a3a3a;
   --bg-panel:   #c0c0c0;
@@ -20,4 +20,209 @@
 
   --panel-pad: 10px;
   --panel-border: 3px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg-page);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  padding: 20px;
+}
+
+
+.game-window {
+  background: var(--bg-panel);
+  border-top:    var(--panel-border) solid var(--border-hi);
+  border-left:   var(--panel-border) solid var(--border-hi);
+  border-right:  var(--panel-border) solid var(--border-dk);
+  border-bottom: var(--panel-border) solid var(--border-dk);
+  padding: var(--panel-pad);
+  display: inline-flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+}
+
+/* Заголовок вікна */
+.window-title {
+  background: linear-gradient(90deg, #000080, #1084d0);
+  color: #fff;
+  font-size: 13px;
+  font-weight: bold;
+  padding: 3px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+  letter-spacing: 0.5px;
+}
+
+.window-title__name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.window-controls {
+  display: flex;
+  gap: 2px;
+}
+
+.win-btn {
+  width: 16px;
+  height: 14px;
+  background: var(--bg-panel);
+  border-top:    2px solid var(--border-hi);
+  border-left:   2px solid var(--border-hi);
+  border-right:  2px solid var(--border-dk);
+  border-bottom: 2px solid var(--border-dk);
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #000;
+  font-weight: bold;
+}
+
+.scoreboard{
+  background: var(--bg-panel);
+  border-top:    2px solid var(--border-lo);
+  border-left:   2px solid var(--border-lo);
+  border-right:  2px solid var(--border-hi);
+  border-bottom: 2px solid var(--border-hi);
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  justify-content
+: space-between;
+}
+
+
+/* LCD-дисплей (таймер) */
+.lcd{
+  background: var(--display-bg);
+  color: var(--display-fg);
+  font-family: var(--font-mono);
+  font-size: 28px;
+  font-weight: bold;
+  letter-spacing: 4px;
+  padding: 4px 8px;
+  min-width: 72px;
+  text-align: right;
+  border-top:    2px solid var(--border-dk);
+  border-left:   2px solid var(--border-dk);
+  border-right:  2px solid var(--border-hi);
+  border-bottom: 2px solid var(--border-hi);
+  text-shadow: 0 0 8px #ff2200;
+  position: relative;
+}
+
+.lcd::before{
+  content: "888";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 4px 8px;
+  color: var(--display-off);
+  pointer-events: none;
+  font-size: 28px;
+  letter-spacing: 4px;
+}
+
+.reset-btn:active{
+  border-top: 3px solid var(--border-dk);
+  border-left: 3px solid var(--border-dk);
+  border-right:  3px solid var(--border-hi);
+  border-bottom: 3px solid var(--border-hi);
+}
+
+/*Перемикач режиму*/
+.mode-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 4px 8px;
+  background: var(--bg-panel);
+  border-top:    2px solid var(--border-lo);
+  border-left:   2px solid var(--border-lo);
+  border-right:  2px solid var(--border-hi);
+  border-bottom: 2px solid var(--border-hi);
+  font-size: 13px;
+  user-select: none;
+}
+
+.mode-bar__hint {
+  font-size: 11px;
+  color: #444;
+}
+
+/* Toggle switch */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 22px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-track {
+  position: absolute;
+  inset: 0;
+  background: #888;
+  border-radius: 11px;
+  border-top:    2px solid var(--border-dk);
+  border-left:   2px solid var(--border-dk);
+  border-right:  2px solid var(--border-hi);
+  border-bottom: 2px solid var(--border-hi);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.toggle-switch input:checked + .toggle-track {
+  background: #cc3300;
+}
+
+.toggle-track::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  background: var(--bg-panel);
+  border-radius: 50%;
+  border-top:    2px solid var(--border-hi);
+  border-left:   2px solid var(--border-hi);
+  border-right:  2px solid var(--border-dk);
+  border-bottom: 2px solid var(--border-dk);
+  transition: transform 0.2s;
+}
+
+.toggle-switch input:checked + .toggle-track::after {
+  transform: translateX(22px);
+}
+
+#mode-label {
+  min-width: 100px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+#mode-label.mode--flag {
+  color: #cc3300;
 }

@@ -170,4 +170,60 @@ _applyCellStyle(cell, gameCell) {
       cell.style["background"] = "#ffcccc";
     }
   }
+
+  _attachClickHandlers() {
+  const container = document.getElementById(this.containerId);
+  if (!container) return;
+
+  // Видаляємо старі слухачі перед додаванням нових
+  container.removeEventListener("click", this._handleClick);
+  container.removeEventListener("contextmenu", this._handleRightClick);
+
+  this._handleClick = (e) => {
+    const cell = e.target.closest("[data-row]");
+    if (!cell) return;
+    const row = parseInt(cell.getAttribute("data-row"), 10);
+    const col = parseInt(cell.getAttribute("data-col"), 10);
+    if (!isNaN(row) && !isNaN(col)) {
+      this.onCellClick(row, col, false);
+    }
+  };
+
+  this._handleRightClick = (e) => {
+    e.preventDefault();
+    const cell = e.target.closest("[data-row]");
+    if (!cell) return;
+    const row = parseInt(cell.getAttribute("data-row"), 10);
+    const col = parseInt(cell.getAttribute("data-col"), 10);
+    if (!isNaN(row) && !isNaN(col)) {
+      this.onCellClick(row, col, true);
+    }
+  };
+
+  container.addEventListener("click", this._handleClick);
+  container.addEventListener("contextmenu", this._handleRightClick);
+}
+
+//  Оновлення
+
+/**
+ * Оновити дані та перерендерити таблицю.
+ * Debounce: якщо викликається кілька разів підряд — лише один refresh.
+ */
+update() {
+  if (this._pendingUpdate) return;
+  this._pendingUpdate = true;
+
+  requestAnimationFrame(() => {
+    this._pendingUpdate = false;
+    if (!this.pivot) return;
+
+    this.pivot.updateData({ data: this._buildData() });
+  });
+}
+
+  refresh() {
+    if (!this.pivot) return;
+    this.pivot.updateData({ data: this._buildData() });
+  }
 }
